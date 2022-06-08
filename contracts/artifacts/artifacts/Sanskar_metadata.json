@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.13+commit.abaa5c0e"
+		"version": "0.8.14+commit.80d49f37"
 	},
 	"language": "Solidity",
 	"output": {
@@ -72,12 +72,50 @@
 				"inputs": [
 					{
 						"indexed": false,
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "_reward",
+						"type": "uint256"
+					}
+				],
+				"name": "RewardWithdrawn",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
 						"internalType": "uint256",
 						"name": "id",
 						"type": "uint256"
 					}
 				],
 				"name": "Snapshot",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_from",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "_stake",
+						"type": "uint256"
+					}
+				],
+				"name": "Staked",
 				"type": "event"
 			},
 			{
@@ -116,6 +154,25 @@
 					}
 				],
 				"name": "Unpaused",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_from",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "_stake",
+						"type": "uint256"
+					}
+				],
+				"name": "Unstaked",
 				"type": "event"
 			},
 			{
@@ -902,20 +959,12 @@
 				"dweb:/ipfs/QmbNtqAq23ZDjCzHukQaa7B3y6rcobscm6FZF5PMQXcnVr"
 			]
 		},
-		"@openzeppelin/contracts/utils/math/SafeMath.sol": {
-			"keccak256": "0x0f633a0223d9a1dcccfcf38a64c9de0874dfcbfac0c6941ccf074d63a2ce0e1e",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://864a40efcffdf408044c332a5aa38ec5618ed7b4eecb8f65faf45671bd6cdc65",
-				"dweb:/ipfs/QmQJquTMtc6fgm5JQzGdsGpA2fqBe3MHWEdt2qzaLySMdN"
-			]
-		},
 		"contracts/artifacts/sns.sol": {
-			"keccak256": "0x564f64ae315ddd6d6249673bd5e0be354d099aa4933e262c3e40522ea4cded78",
+			"keccak256": "0x8872c9a31736cb70fbb91f4bf2c9e96dad922b8e25d3b38de1196fc5f57821b0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://edabb466059b5c59cb8f885df1c9e6954967d9f3a973a553a224af3cdd1e716b",
-				"dweb:/ipfs/QmSyqeQVSwPddWQtPhXawoqgmuUxDCDBzmg3QnNEFRsVF4"
+				"bzz-raw://255157bfeca8d347518bbb023d14805825a84202b22c725eac55e049e5143301",
+				"dweb:/ipfs/Qme7reg7XJyKoXgtTvixerMCtjQgps2SrFbYz6qTp8z67d"
 			]
 		}
 	},

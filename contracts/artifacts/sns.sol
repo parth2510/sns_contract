@@ -1,3 +1,5 @@
+//handle decimals in stake , transfer etc, events
+
 // batch airdrop
 // multisig has to be geniric tpo change ownership to other multisig
 //events on every action that involves an offchain action
@@ -15,12 +17,16 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Snapshot.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol"; // needed? for staking
+// import "@openzeppelin/contracts/utils/math/SafeMath.sol"; // needed? for staking
 
 // p=opensea approve and sell, erc020 out of contrwact
 /// @custom:security-contact zionverse@gmail.com
 contract Sanskar is ERC20, ERC20Burnable, Pausable, Ownable, ERC20Snapshot {
-    using SafeMath for uint256;
+    // using SafeMath for uint256;
+
+    event Staked(address _from, uint256 _stake);
+    event Unstaked(address _from, uint256 _stake);
+    event RewardWithdrawn(address from, uint256 _reward);
 
     address[] internal stakeholders; // since we cant iterate on mapping to find all stakeholders// see how to avoid iteration
     
@@ -63,7 +69,7 @@ contract Sanskar is ERC20, ERC20Burnable, Pausable, Ownable, ERC20Snapshot {
         whenNotPaused
         override(ERC20, ERC20Snapshot) // multiple inheitence
     {
-        super._beforeTokenTransfer(from, to, amount * 10 ** decimals());
+        super._beforeTokenTransfer(from, to, amount * 10 ** decimals()); // check
     }
 
     //---/---- batch -- be careful with the size of batch
@@ -203,8 +209,10 @@ contract Sanskar is ERC20, ERC20Burnable, Pausable, Ownable, ERC20Snapshot {
             
         }
 
-       StakeholdersInfo[msg.sender].stakeAmount = StakeholdersInfo[msg.sender].stakeAmount.add(_stakeInDecimals);
+       StakeholdersInfo[msg.sender].stakeAmount = StakeholdersInfo[msg.sender].stakeAmount + _stakeInDecimals ;
        StakeholdersInfo[msg.sender].lastRewardUpdatedTime = block.timestamp;
+
+       emit Staked(msg.sender, _stakeInDecimals); // check stake in decimals?
    }
 
    /**
@@ -221,7 +229,7 @@ contract Sanskar is ERC20, ERC20Burnable, Pausable, Ownable, ERC20Snapshot {
         uint256 _stakeInDecimals = _stake * 10 ** decimals();
 
         updateRewards(msg.sender);
-        StakeholdersInfo[msg.sender].stakeAmount = StakeholdersInfo[msg.sender].stakeAmount.sub(_stakeInDecimals); // will automatically revert as uint cant store negative values
+        StakeholdersInfo[msg.sender].stakeAmount = StakeholdersInfo[msg.sender].stakeAmount - _stakeInDecimals; // will automatically revert as uint cant store negative values
         
 
        if(StakeholdersInfo[msg.sender].stakeAmount == 0){
@@ -229,6 +237,8 @@ contract Sanskar is ERC20, ERC20Burnable, Pausable, Ownable, ERC20Snapshot {
             //check update timestamp? s 
        }
        _mint(msg.sender, _stakeInDecimals);
+
+       emit Unstaked(msg.sender, _stakeInDecimals);
    }
 
    // rewards
@@ -280,7 +290,7 @@ contract Sanskar is ERC20, ERC20Burnable, Pausable, Ownable, ERC20Snapshot {
        // update rewards in the mapping and then return, check // no
        // cxalclulate the updated rewards and return the updated value but dont write it
        uint256 last_reward = calculateReward(_stakeholder);
-       return rewards[_stakeholder].add(last_reward);
+       return rewards[_stakeholder] + last_reward;
    }
     
     // total rewards function?
@@ -310,9 +320,11 @@ contract Sanskar is ERC20, ERC20Burnable, Pausable, Ownable, ERC20Snapshot {
 
     //    uint256 reward = rewards[msg.sender];
        rewards[msg.sender] = 0;
+       StakeholdersInfo[msg.sender].lastRewardUpdatedTime = block.timestamp;
        // timestamp update, check
        _mint(msg.sender, latest_reward);
-       //event
+       
+       emit RewardWithdrawn(msg.sender, latest_reward);
    }
 
 
