@@ -22,11 +22,20 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 // p=opensea approve and sell, erc020 out of contrwact
 /// @custom:security-contact zionverse@gmail.com
 contract Sanskar is ERC20, ERC20Burnable, Pausable, Ownable, ERC20Snapshot {
-    // using SafeMath for uint256;
 
     event Staked(address _from, uint256 _stake);
     event Unstaked(address _from, uint256 _stake);
     event RewardWithdrawn(address from, uint256 _reward);
+
+    /**
+     * @dev Throws if called by any account other than the admin.
+     */
+    modifier onlyAdmin() {
+        require(admin() == _msgSender(), "Caller is not the admin");
+        _;
+    }
+    
+
 
     address[] internal stakeholders; // since we cant iterate on mapping to find all stakeholders// see how to avoid iteration
     
@@ -46,17 +55,35 @@ contract Sanskar is ERC20, ERC20Burnable, Pausable, Ownable, ERC20Snapshot {
     */
    mapping(address => uint256) internal rewards;
 
+    // admin to fascilitate low importance features // check private?
+   address internal _admin; 
+
     constructor() ERC20("Sanskar", "SNR") {
         _mint(msg.sender, 10000 * 10 ** decimals()); // mint to owner
     }
 
-    // batch transfer?🍔
+    // batch transfer?
 
-    function pause() public onlyOwner {
+    // admin functions
+
+    /**
+     * @dev Returns the address of the current admin.
+     */
+    function admin() public view virtual returns (address) {
+        return _admin;
+    }
+
+    function setAdmin(address new_admin) public onlyOwner{
+        require (_admin != new_admin);
+        _admin = new_admin;
+
+    }
+
+    function pause() public onlyAdmin {
         _pause();
     }
 
-    function unpause() public onlyOwner {
+    function unpause() public onlyAdmin {
         _unpause();
     }
 

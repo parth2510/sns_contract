@@ -176,6 +176,19 @@
 				"type": "event"
 			},
 			{
+				"inputs": [],
+				"name": "admin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -568,6 +581,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "new_admin",
+						"type": "address"
+					}
+				],
+				"name": "setAdmin",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "snapshot",
 				"outputs": [],
@@ -736,6 +762,9 @@
 			"custom:security-contact": "zionverse@gmail.com",
 			"kind": "dev",
 			"methods": {
+				"admin()": {
+					"details": "Returns the address of the current admin."
+				},
 				"allowance(address,address)": {
 					"details": "See {IERC20-allowance}."
 				},
@@ -960,11 +989,11 @@
 			]
 		},
 		"contracts/artifacts/sns.sol": {
-			"keccak256": "0x8872c9a31736cb70fbb91f4bf2c9e96dad922b8e25d3b38de1196fc5f57821b0",
+			"keccak256": "0x0f736ad77df35d8fcb4304610be4659994d4fafa524bc20ca3f9254e8040d80e",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://255157bfeca8d347518bbb023d14805825a84202b22c725eac55e049e5143301",
-				"dweb:/ipfs/Qme7reg7XJyKoXgtTvixerMCtjQgps2SrFbYz6qTp8z67d"
+				"bzz-raw://e02b091f4372fe2a0d6364eb1c7b64eaca1f922e6a911b02c82567ed7cdc9710",
+				"dweb:/ipfs/QmZHbL59XjF8XgLaWQAzpfaMRBf5wM9F6zwLSRmPV9BsAu"
 			]
 		}
 	},
